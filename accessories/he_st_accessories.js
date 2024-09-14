@@ -511,8 +511,8 @@ function HE_ST_Accessory(platform, group, device, accessory) {
                 platform.addAttributeUsage('thermostatFanMode', device.deviceid, thisCharacteristic);
             }
             if ((!(that.device.attributes.hasOwnProperty('battery'))) || (that.device.attributes.battery === null)) {
-                that.getaddService(Service.BatteryService).setCharacteristic(Characteristic.StatusLowBattery, Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
-                that.getaddService(Service.BatteryService).setCharacteristic(Characteristic.ChargingState, Characteristic.ChargingState.NOT_CHARGING);
+                that.getaddService(Service.Battery).setCharacteristic(Characteristic.StatusLowBattery, Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                that.getaddService(Service.Battery).setCharacteristic(Characteristic.ChargingState, Characteristic.ChargingState.NOT_CHARGING);
             }
             that.getaddService(Service.Thermostat).addOptionalCharacteristic(Characteristic.StatusActive);
             that.getaddService(Service.Thermostat).setCharacteristic(Characteristic.StatusActive, true);
@@ -1037,19 +1037,19 @@ function HE_ST_Accessory(platform, group, device, accessory) {
     }
     if (that.device.attributes.hasOwnProperty('battery') && that.device.attributes.battery !== null) {
         that.deviceGroup = "battery";
-        thisCharacteristic = that.getaddService(Service.BatteryService).getCharacteristic(Characteristic.BatteryLevel)
+        thisCharacteristic = that.getaddService(Service.Battery).getCharacteristic(Characteristic.BatteryLevel)
             .on('get', function(callback) {
                 var character = this;
                 callback(null, Math.round(that.device.attributes.battery));
             });
         platform.addAttributeUsage('battery', device.deviceid, thisCharacteristic);
-        thisCharacteristic = that.getaddService(Service.BatteryService).getCharacteristic(Characteristic.StatusLowBattery)
+        thisCharacteristic = that.getaddService(Service.Battery).getCharacteristic(Characteristic.StatusLowBattery)
             .on('get', function(callback) {
                 var character = this;
                 let battStatus = (that.device.attributes.battery < 20) ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
                 callback(null, battStatus);
             });
-        that.getaddService(Service.BatteryService).setCharacteristic(Characteristic.ChargingState, Characteristic.ChargingState.NOT_CHARGING);
+        that.getaddService(Service.Battery).setCharacteristic(Characteristic.ChargingState, Characteristic.ChargingState.NOT_CHARGING);
         platform.addAttributeUsage('battery', device.deviceid, thisCharacteristic);
     }
     if (that.device.attributes.hasOwnProperty('alarmSystemStatus')) {
@@ -1597,7 +1597,7 @@ function updateAttributes(data, platform, myObject) {
     //that.device.attributes = data.attributes;
     for (var i = 0; i < that.accessory.services.length; i++) {
         for (var j = 0; j < that.accessory.services[i].characteristics.length; j++) {
-            that.accessory.services[i].characteristics[j].getValue();
+            that.accessory.services[i].characteristics[j].value;
         }
     }
 }
@@ -1611,7 +1611,7 @@ function loadData(data, myObject) {
         this.device = data;
         for (var i = 0; i < that.accessory.services.length; i++) {
             for (var j = 0; j < that.accessory.services[i].characteristics.length; j++) {
-                that.accessory.services[i].characteristics[j].getValue();
+                that.accessory.services[i].characteristics[j].value;
             }
         }
     } else {
@@ -1623,7 +1623,7 @@ function loadData(data, myObject) {
             this.device = data;
             for (var i = 0; i < that.accessory.services.length; i++) {
                 for (var j = 0; j < that.accessory.services[i].characteristics.length; j++) {
-                    that.accessory.services[i].characteristics[j].getValue();
+                    that.accessory.services[i].characteristics[j].value;
                 }
             }
         });

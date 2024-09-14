@@ -785,7 +785,7 @@ HE_ST_Platform.prototype = {
                     else if ((attributeSet.attribute === 'held') && that.isProgrammableButton(attributeSet.device))
                         myUsage[j].updateValue(Characteristic.ProgrammableSwitchEvent.LONG_PRESS);
                     else
-                        myUsage[j].getValue();
+                        myUsage[j].value;
                 }
             }
         }
